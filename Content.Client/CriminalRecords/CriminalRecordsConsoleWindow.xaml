@@ -116,9 +116,9 @@
                                    VerticalExpand="True"
                                    HorizontalExpand="True"
                                    Margin="5">
-                         <Label Name="SecurityRecord"
-                                Margin="5"
-                                HorizontalExpand="True"/>
+                         <RichTextLabel Name="SecurityRecord"
+                                        Margin="5"
+                                        HorizontalExpand="True"/>
                      </BoxContainer>
                 </TabContainer>
                 <!-- WL-Records-Edit-End -->
