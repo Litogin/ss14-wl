@@ -68,16 +68,9 @@ public sealed partial class TTSSystem : EntitySystem
             return;
 
         //WL-PreviewTTSEdit-Start
-        var previewText = string.Empty;
-
-        if (ev.PreviewText != String.Empty)
-        {
-            previewText = ev.PreviewText;
-        }
-        else
-        {
-            previewText = _rng.Pick(_sampleText);
-        }
+        var previewText = !string.IsNullOrEmpty(ev.PreviewText)
+            ? ev.PreviewText
+            : _rng.Pick(_sampleText);
         //WL-PreviewTTSEdit-End
 
         // var previewText = _rng.Pick(_sampleText); //WL-PreviewTTSEdit
