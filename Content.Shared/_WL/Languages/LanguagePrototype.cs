@@ -1,3 +1,4 @@
+using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -23,4 +24,13 @@ public sealed partial class LanguagePrototype : IPrototype
 
     [DataField("color")]
     public Color Color = Color.White;
+
+    [DataField("needtts")]
+    public bool NeedTTS = true;
+
+    [DataField("needsound")]
+    public bool NeedSound = false;
+
+    [DataField("sound")]
+    public SoundCollectionSpecifier Sound = new SoundCollectionSpecifier("TernarySounds");
 }
