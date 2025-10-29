@@ -14,6 +14,8 @@
   skinColoration: Hues
   sexes:
   - Unsexed
+  minHeight: 110
+  maxHeight: 220
 
 - type: speciesBaseSprites
   id: MobGolemSprites
@@ -40,6 +42,7 @@
 
 - type: markingPoints
   id: MobGolemMarkingLimits
+  onlyWhitelisted: true
   points:
     Hair:
       points: 0
