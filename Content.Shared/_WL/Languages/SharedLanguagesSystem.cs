@@ -48,24 +48,13 @@ public abstract class SharedLanguagesSystem : EntitySystem
     {
         var proto = GetLanguagePrototype(language);
 
-        TryProccessLaguageMessage(uid, message, out string new_message);
-
         if (proto == null)
         {
-            proto = GetLanguagePrototype(uid, message);
-            if (proto == null)
-            {
-                return new_message;
-            }
-            else
-            {
-                var obfus = proto.Obfuscation.Obfuscate(new_message, _ticker.RoundId);
-                return obfus;
-            }
+            return message;
         }
         else
         {
-            var obfus = proto.Obfuscation.Obfuscate(new_message, _ticker.RoundId);
+            var obfus = proto.Obfuscation.Obfuscate(message, _ticker.RoundId);
             return obfus;
         }
     }
@@ -119,17 +108,17 @@ public abstract class SharedLanguagesSystem : EntitySystem
     {
         LanguagePrototype? language = null;
 
-        if (TryComp<LanguagesComponent>(uid, out var comp))
-        {
-            var prefix = message[1];
-            prefix = char.ToLower(prefix);
+        if (!TryComp<LanguagesComponent>(uid, out var comp))
+            return null;
 
-            if (_keylan.TryGetValue(prefix, out language))
-            {
-                return language;
-            }
-        }
-        return null;
+        if (string.IsNullOrEmpty(message) || message.Length < 2 || !(message.StartsWith(LaguagePrefix)))
+            return null;
+
+        var prefix = char.ToLower(message[1]);
+
+
+        return _keylan.TryGetValue(prefix, out language)
+            ? language : null;
     }
 
     public bool TryProccessLaguageMessage(EntityUid source, string message, out string new_message)
@@ -164,13 +153,9 @@ public abstract class SharedLanguagesSystem : EntitySystem
             }
             if (language != null)
             {
-                foreach (var lang in comp.Speaking)
-                {
-                    if (language == lang)
-                    {
-                        return true;
-                    }
-                }
+                if(comp.Speaking.Contains(language.ID))
+                    return true;
+
                 new_message = string.Empty;
                 return false;
             }

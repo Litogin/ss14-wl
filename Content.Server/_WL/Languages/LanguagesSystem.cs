@@ -122,13 +122,29 @@ public sealed class LanguagesSystem : SharedLanguagesSystem
 
     public string ObfuscateMessageFromSource(string message, EntityUid source)
     {
+        bool prefix = TryProccessLaguageMessage(source, message, out string new_message);
+
         if (!TryComp<LanguagesComponent>(source, out var source_lang))
-            return message;
+            return new_message;
         else
         {
-            var message_language = source_lang.CurrentLanguage;
-            var obfus = ObfuscateMessage(source, message, message_language);
-            return obfus;
+            if (!prefix)
+            {
+                var message_language = source_lang.CurrentLanguage;
+                var obfus = ObfuscateMessage(source, new_message, message_language);
+                return obfus;
+            }
+            else
+            {
+                var proto = GetLanguagePrototype(source, message);
+
+                if (proto == null)
+                    return new_message;
+
+                var message_language = proto.ID.ToString();
+                var obfus = ObfuscateMessage(source, new_message, message_language);
+                return obfus;
+            }
         }
     }
 
