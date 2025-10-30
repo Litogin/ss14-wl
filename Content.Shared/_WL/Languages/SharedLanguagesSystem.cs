@@ -147,7 +147,7 @@ public abstract class SharedLanguagesSystem : EntitySystem
             if (message.Length <= 2 || char.IsWhiteSpace(message[1]))
             {
                 new_message = string.Empty;
-                _popup.PopupEntity(/*Loc.GetString("chat-manager-no-radio-key")*/ "на чем я говорю?", source, source);
+                _popup.PopupEntity(Loc.GetString("chat-manager-no-language-key"), source, source);
                 return false;
             }
 
@@ -157,7 +157,7 @@ public abstract class SharedLanguagesSystem : EntitySystem
 
             if (!_keylan.TryGetValue(prefix, out LanguagePrototype? language))
             {
-                var msg = /*Loc.GetString("chat-manager-no-such-channel", ("key", channelKey))*/ "Что я несу?";
+                var msg = Loc.GetString("chat-manager-no-such-language", ("key", prefix));
                 new_message = string.Empty;
                 _popup.PopupEntity(msg, source, source);
                 return false;

@@ -263,25 +263,32 @@ public sealed class LanguagesSystem : SharedLanguagesSystem
         if (color == Color.White)
             colorize = false;
 
-        var escapedMessage = FormattedMessage.EscapeText(message);
+        var escapedMessage = FormattedMessage.EscapeText(new_message);
 
-        if (colorize)
+        if (new_message != string.Empty)
         {
+            if (colorize)
+            {
 
-            var wrappedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message-lang",
-                    ("entityName", name),
-                    ("message", escapedMessage),
-                    ("langColor", color));
+                var wrappedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message-lang",
+                        ("entityName", name),
+                        ("message", escapedMessage),
+                        ("langColor", color));
 
-            return wrappedMessage;
+                return wrappedMessage;
+            }
+            else
+            {
+                var wrappedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
+                        ("entityName", name),
+                        ("message", escapedMessage));
+
+                return wrappedMessage;
+            }
         }
         else
         {
-            var wrappedMessage = Loc.GetString("chat-manager-entity-whisper-wrap-message",
-                    ("entityName", name),
-                    ("message", escapedMessage));
-
-            return wrappedMessage;
+            return new_message;
         }
     }
 
@@ -300,26 +307,35 @@ public sealed class LanguagesSystem : SharedLanguagesSystem
 
     public string GetWrappedMessage(string message, EntityUid source, string name, SpeechVerbPrototype speech, bool colorize = false)
     {
-        var color = GetColor(source);
+        bool prefix = TryProccessLaguageMessage(source, message, out string new_message);
+
+        var color = GetColor(message, source, prefix);
 
         if (color == Color.White)
             colorize = false;
 
-        var wrappedMessage = colorize ? Loc.GetString(speech.Bold ? "chat-manager-entity-say-bold-wrap-message-lang" : "chat-manager-entity-say-wrap-message-lang",
-                ("entityName", name),
-                ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
-                ("fontType", speech.FontId),
-                ("fontSize", speech.FontSize),
-                ("message", FormattedMessage.EscapeText(message)),
-                ("langColor", color)
-        ) :
-            Loc.GetString(speech.Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
-                ("entityName", name),
-                ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
-                ("fontType", speech.FontId),
-                ("fontSize", speech.FontSize),
-                ("message", FormattedMessage.EscapeText(message))
-        );
-        return wrappedMessage;
+        if (new_message != string.Empty)
+        {
+            var wrappedMessage = colorize ? Loc.GetString(speech.Bold ? "chat-manager-entity-say-bold-wrap-message-lang" : "chat-manager-entity-say-wrap-message-lang",
+                    ("entityName", name),
+                    ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
+                    ("fontType", speech.FontId),
+                    ("fontSize", speech.FontSize),
+                    ("message", FormattedMessage.EscapeText(new_message)),
+                    ("langColor", color)
+            ) :
+                Loc.GetString(speech.Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
+                    ("entityName", name),
+                    ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
+                    ("fontType", speech.FontId),
+                    ("fontSize", speech.FontSize),
+                    ("message", FormattedMessage.EscapeText(new_message))
+            );
+            return wrappedMessage;
+        }
+        else
+        {
+            return new_message;
+        }
     }
  }

@@ -230,6 +230,7 @@
   name: language-slimish
   description: language-slimish-desc
   color: '#309100'
+  keylang: 'с'
   needtts: false
   obfuscation:
     !type:EmoteObfuscation
