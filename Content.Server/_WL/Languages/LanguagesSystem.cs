@@ -122,7 +122,7 @@ public sealed class LanguagesSystem : SharedLanguagesSystem
 
     public string ObfuscateMessageFromSource(string message, EntityUid source)
     {
-        bool prefix = TryProccessLaguageMessage(source, message, out string new_message);
+        bool prefix = TryProcessLanguageMessage(source, message, out string new_message);
 
         if (!TryComp<LanguagesComponent>(source, out var source_lang))
             return new_message;
@@ -141,7 +141,7 @@ public sealed class LanguagesSystem : SharedLanguagesSystem
                 if (proto == null)
                     return new_message;
 
-                var message_language = proto.ID.ToString();
+                var message_language = proto.ID;
                 var obfus = ObfuscateMessage(source, new_message, message_language);
                 return obfus;
             }
@@ -219,7 +219,7 @@ public sealed class LanguagesSystem : SharedLanguagesSystem
 
     public string GetRadioWrappedMessage(string message, EntityUid source, string name, SpeechVerbPrototype speech, RadioChannelPrototype channel, bool colorize = false)
     {
-        bool prefix = TryProccessLaguageMessage(source, message, out string new_message);
+        bool prefix = TryProcessLanguageMessage(source, message, out string new_message);
 
         var color = GetColor(message, source, prefix);
 
@@ -272,7 +272,7 @@ public sealed class LanguagesSystem : SharedLanguagesSystem
     public string GetWhisperWrappedMessage(string message, EntityUid source, string name, bool colorize = false)
     {
 
-        bool prefix = TryProccessLaguageMessage(source, message, out string new_message);
+        bool prefix = TryProcessLanguageMessage(source, message, out string new_message);
 
         var color = GetColor(message, source, prefix);
         
@@ -323,7 +323,7 @@ public sealed class LanguagesSystem : SharedLanguagesSystem
 
     public string GetWrappedMessage(string message, EntityUid source, string name, SpeechVerbPrototype speech, bool colorize = false)
     {
-        bool prefix = TryProccessLaguageMessage(source, message, out string new_message);
+        bool prefix = TryProcessLanguageMessage(source, message, out string new_message);
 
         var color = GetColor(message, source, prefix);
 

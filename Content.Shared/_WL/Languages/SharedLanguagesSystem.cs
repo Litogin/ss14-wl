@@ -18,7 +18,7 @@ public abstract class SharedLanguagesSystem : EntitySystem
 
     private FrozenDictionary<char, LanguagePrototype> _keylan = default!;
 
-    const char LaguagePrefix = '+';
+    const char LanguagePrefix = '+';
 
     public override void Initialize()
     {
@@ -111,7 +111,7 @@ public abstract class SharedLanguagesSystem : EntitySystem
         if (!TryComp<LanguagesComponent>(uid, out var comp))
             return null;
 
-        if (string.IsNullOrEmpty(message) || message.Length < 2 || !(message.StartsWith(LaguagePrefix)))
+        if (string.IsNullOrEmpty(message) || message.Length < 2 || !(message.StartsWith(LanguagePrefix)))
             return null;
 
         var prefix = char.ToLower(message[1]);
@@ -121,7 +121,7 @@ public abstract class SharedLanguagesSystem : EntitySystem
             ? language : null;
     }
 
-    public bool TryProccessLaguageMessage(EntityUid source, string message, out string new_message)
+    public bool TryProcessLanguageMessage(EntityUid source, string message, out string new_message)
     {
         new_message = message.Trim();
 
@@ -130,7 +130,7 @@ public abstract class SharedLanguagesSystem : EntitySystem
 
         if (TryComp<LanguagesComponent>(source, out var comp))
         {
-            if (!(message.StartsWith(LaguagePrefix)))
+            if (!(message.StartsWith(LanguagePrefix)))
                 return false;
 
             if (message.Length <= 2 || char.IsWhiteSpace(message[1]))
@@ -153,7 +153,7 @@ public abstract class SharedLanguagesSystem : EntitySystem
             }
             if (language != null)
             {
-                if(comp.Speaking.Contains(language.ID))
+                if (comp.Speaking.Contains(language.ID))
                     return true;
 
                 new_message = string.Empty;
@@ -161,7 +161,7 @@ public abstract class SharedLanguagesSystem : EntitySystem
             }
         }
 
-        return true;
+        return false;
     }
 
     [Serializable, NetSerializable]
