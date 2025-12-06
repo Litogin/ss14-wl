@@ -1,0 +1,14 @@
+- type: entity
+  parent: Clothing
+  id: MODSuit
+  name: ERT engineer's hardsuit
+  description: A protective hardsuit worn by the engineers of an emergency response team.
+  components:
+  - type: Item
+    size: Huge
+  - type: Clothing
+    quickEquip: false
+    slots:
+    - back
+  - type: Sprite
+    sprite: _WL/MODSuit/Test.rsi
