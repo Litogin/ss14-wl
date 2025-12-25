@@ -55,16 +55,16 @@ public sealed class MODSuitMenuBoundUserInterface : BoundUserInterface
 
         var models = new RadialMenuOptionBase[buttonsByCategory.Count + topLevelActions.Count];
         var i = 0;
-        foreach (var (key, list) in buttonsByCategory)
-        {
-            var groupInfo = PrototypesGroupingInfo[key];
-            models[i] = new RadialMenuNestedLayerOption(list)
-            {
-                IconSpecifier = RadialMenuIconSpecifier.With(groupInfo.Sprite),
-                ToolTip = Loc.GetString(groupInfo.Tooltip)
-            };
-            i++;
-        }
+        //foreach (var (key, list) in buttonsByCategory)
+        //{
+        //    var groupInfo = PrototypesGroupingInfo[key];
+        //    models[i] = new RadialMenuNestedLayerOption(list)
+        //    {
+        //        IconSpecifier = RadialMenuIconSpecifier.With(groupInfo.Sprite),
+        //        ToolTip = Loc.GetString(groupInfo.Tooltip)
+        //    };
+        //    i++;
+        //}
 
         foreach (var action in topLevelActions)
         {
@@ -74,10 +74,10 @@ public sealed class MODSuitMenuBoundUserInterface : BoundUserInterface
 
         return models;
     }
-    private void HandleMenuOptionClick(RCDPrototype proto)
+    private void HandleMenuOptionClick(MODSuitPrototype proto)
     {
         // A predicted message cannot be used here as the RCD UI is closed immediately
         // after this message is sent, which will stop the server from receiving it
-        SendMessage(new RCDSystemMessage(proto.ID));
+        SendMessage(new MODSuitSystemMassage(proto.ID));
     }
 }

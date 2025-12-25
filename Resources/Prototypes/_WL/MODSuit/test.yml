@@ -1,14 +1,33 @@
 - type: entity
-  parent: Clothing
-  id: MODSuit
-  name: ERT engineer's hardsuit
-  description: A protective hardsuit worn by the engineers of an emergency response team.
+  parent: [Clothing, ContentsExplosionResistanceBase]
+  id: ClothingMODSuit
+  name: backpack
+  description: You wear this on your back and put items into it.
   components:
+  - type: Sprite
+    sprite: _WL/MODSuit/Test.rsi
+    state: icon
   - type: Item
     size: Huge
   - type: Clothing
     quickEquip: false
     slots:
     - back
-  - type: Sprite
-    sprite: _WL/MODSuit/Test.rsi
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+  - type: UserInterface
+    interfaces:
+      enum.StorageUiKey.Key:
+        type: StorageBoundUserInterface
+  # to prevent bag open/honk spam
+  - type: UseDelay
+    delay: 0.5
+  - type: ExplosionResistance
+    damageCoefficient: 0.9
+  - type: Tag
+    tags:
+    - WhitelistChameleon
+    - Backpack
+  - type: MODSuit
