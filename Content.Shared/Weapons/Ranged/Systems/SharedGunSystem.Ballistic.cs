@@ -240,14 +240,11 @@ public abstract partial class SharedGunSystem
         for (var i = 0; i < args.Shots; i++)
         {
             EntityUid? ammoEntity = null;
-
-            var existingEnt = component.Entities[^1];
-
             if (component.Entities.Count > 0)
             {
-                args.Ammo.Add((existingEnt, EnsureShootable(existingEnt)));
                 if (!component.AutoCycle) //WL - if autocycle=false don't remove spent ammo from the gun
                     break;
+                var existingEnt = component.Entities[^1];
                 component.Entities.RemoveAt(component.Entities.Count - 1);
                 DirtyField(uid, component, nameof(BallisticAmmoProviderComponent.Entities));
                 Containers.Remove(existingEnt, component.Container);
@@ -261,8 +258,8 @@ public abstract partial class SharedGunSystem
                 //WL - if autocycle=false put spent ammo back in the gun
                 if (!component.AutoCycle)
                 {
-                    component.Entities.Add(existingEnt);
-                    Containers.Insert(existingEnt, component.Container);
+                    component.Entities.Add(ammoEntity.Value);
+                    Containers.Insert(ammoEntity.Value, component.Container);
                     DirtyField(uid, component, nameof(BallisticAmmoProviderComponent.Entities));
                 }
                 //WL - Autocycle end

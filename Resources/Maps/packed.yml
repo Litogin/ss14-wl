@@ -12029,19 +12029,19 @@ entities:
       parent: 2
     - type: Fixtures
       fixtures: {}
-  - uid: 13173
-    components:
-    - type: MetaData
-      name: APC (Engi - Telecomms)
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 18.5,-20.5
-      parent: 2
-    - type: AccessReader
-      accessListsOriginal:
-      - - Engineering
-    - type: Fixtures
-      fixtures: {}
+#  - uid: 13173
+#    components:
+#    - type: MetaData
+#      name: APC (Engi - Telecomms)
+#    - type: Transform
+#      rot: 3.141592653589793 rad
+#      pos: 18.5,-20.5
+#      parent: 2
+#    - type: AccessReader
+#      accessListsOriginal:
+#      - - Engineering
+#    - type: Fixtures
+#      fixtures: {}
   - uid: 13549
     components:
     - type: MetaData
