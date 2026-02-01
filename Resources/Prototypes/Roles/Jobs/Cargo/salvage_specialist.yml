@@ -14,7 +14,9 @@
 #    - !type:OverallPlaytimeRequirement
 #      time: 36000 #10 hrs
     - !type:AgeRequirement
-      minAge: 18
+      minAge: 20
+      speciesMaxAge:
+        Vulpkanin: 30
   icon: "JobIconShaftMiner"
   startingGear: SalvageSpecialistGear
   supervisors: job-supervisors-qm

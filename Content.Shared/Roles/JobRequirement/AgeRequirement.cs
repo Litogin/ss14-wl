@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Shared._WL.CCVars;
+using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Preferences;
 using JetBrains.Annotations;
 using Robust.Shared.Configuration;
@@ -23,6 +24,13 @@ public sealed partial class AgeRequirement : JobRequirement
 
     [DataField]
     public int? MaxAge;
+
+    [DataField]
+    public Dictionary<ProtoId<SpeciesPrototype>, int> SpeciesMinAge { get; private set; } = new();
+
+    [DataField]
+    public Dictionary<ProtoId<SpeciesPrototype>, int> SpeciesMaxAge { get; private set; } = new();
+
     //WL-Changes-end
 
     public override bool Check(
@@ -50,8 +58,31 @@ public sealed partial class AgeRequirement : JobRequirement
         if (profile.JobUnblockings.ContainsKey(job.ID))
             isNeeded = false;
 
+        var minAgeForSpecies = 0;
+        var maxAgeForSpecies = 0;
+
+        if (SpeciesMinAge.TryGetValue(profile.Species, out var minAge))
+            minAgeForSpecies = minAge;
+
+        if (SpeciesMaxAge.TryGetValue(profile.Species, out var maxAge))
+            maxAgeForSpecies = maxAge;
+
+
         if (isNeeded)
         {
+            if (minAgeForSpecies != 0 && profile.Age < minAgeForSpecies)
+            {
+                reason = FormattedMessage.FromMarkupPermissive(Loc.GetString("role-timer-age-too-young",
+                    ("age", minAgeForSpecies)));
+                return false;
+            }
+            if (maxAgeForSpecies != 0 && profile.Age > maxAgeForSpecies)
+            {
+                reason = FormattedMessage.FromMarkupPermissive(Loc.GetString("role-timer-age-too-old",
+                    ("age", maxAgeForSpecies)));
+                return false;
+            }
+
             if (MinAge != null && profile.Age < MinAge)
             {
                 reason = FormattedMessage.FromMarkupPermissive(Loc.GetString("role-timer-age-too-young",
