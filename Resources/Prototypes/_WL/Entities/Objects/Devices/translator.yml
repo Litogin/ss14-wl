@@ -1,0 +1,27 @@
+- type: entity
+  name: переводчик
+  description: переводит языки
+  parent: BaseItem
+  id: TranslatorLanguage
+  components:
+    - type: Sprite
+      sprite: _WL/Objects/Devices/pda.rsi #WL Lyvsi PDA resprite
+      layers:
+      - map: [ "enum.PdaVisualLayers.Base" ]
+        state: "pda"
+      - state: "light_overlay"
+        map: [ "enum.PdaVisualLayers.Flashlight" ]
+        shader: "unshaded"
+        visible: false
+      - state: "id_overlay"
+        map: [ "enum.PdaVisualLayers.IdLight" ]
+        shader: "unshaded"
+        visible: false
+    - type: Icon
+      sprite: _WL/Objects/Devices/pda.rsi #WL Lyvsi PDA resprite
+      state: pda
+    - type: Clothing
+      quickEquip: true
+      slots:
+      - neck
+    - type: Translator

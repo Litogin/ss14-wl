@@ -38,6 +38,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Replays;
 using Robust.Shared.Utility;
+using Content.Server._WL.Translator;
 
 namespace Content.Server.Chat.Systems;
 
@@ -64,6 +65,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private ReplacementAccentSystem _wordreplacement = default!;
     [Dependency] private ExamineSystemShared _examineSystem = default!;
     [Dependency] private LanguagesSystem _languages = default!; //WL-Changes: Languages
+    [Dependency] private TranslatorSystem _translator = default!;
     [Dependency] private AtmosphereSystem _atmosphereSystem = default!; // WL-Change: No talk in vacuum
 
     // Corvax-TTS-Start: Moved from Server to Shared
@@ -758,7 +760,11 @@ public sealed partial class ChatSystem : SharedChatSystem
     /// </summary>
     private void SendInVoiceRange(ChatChannel channel, string message, string wrappedMessage, string obfusWrappedMessage, EntityUid source, ChatTransmitRange range, NetUserId? author = null)
     {
-        var obfusMessage = _languages.ObfuscateMessageFromSource(message, source); //WL-Changes: Languages
+        //WL-Changes-: Languages start
+        var obfusMessage = _languages.ObfuscateMessageFromSource(message, source);
+        var speakerTranslated = _translator.CanSpeakerTranslate(source);
+        //WL-Changes: Languages end
+
         foreach (var (session, data) in GetRecipients(source, VoiceRange))
         {
             //WL-Changes: Languages start
@@ -771,14 +777,14 @@ public sealed partial class ChatSystem : SharedChatSystem
             var afterMessage = message;
             var afterWrappedMessage = wrappedMessage;
             var afterChannel = channel;
-            if (!_languages.CanUnderstand(source, listener, message))
+            if (!_languages.CanUnderstand(source, listener, message) &&
+                !(speakerTranslated || _translator.CanListenerTranslated(listener)))
             {
                 afterMessage = obfusMessage;
                 afterWrappedMessage = obfusWrappedMessage;
                 if (_languages.IsObfusEmoting(source, message) && channel != ChatChannel.LOOC)
                     afterChannel = ChatChannel.Emotes;
             }
-
             //WL-Changes: Languages end
 
             if (entRange == MessageRangeCheckResult.Disallowed)
